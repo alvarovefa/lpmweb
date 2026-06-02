@@ -8,3 +8,5 @@ createRoot(document.getElementById('root')!).render(
     <App />
   </StrictMode>,
 )
+// Aquí va tu lógica habitual de JavaScript/TypeScript Vanilla
+console.log("Proyecto LPM cargado con éxito");
