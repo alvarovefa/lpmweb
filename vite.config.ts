@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig(({ command }) => {
   return {
     plugins: [tailwindcss()],
-    base: command === 'build' ? '/lpmweb/' : '/',
+    base: command === 'build' ? './' : '/',
     server: {
       host: '0.0.0.0',
       port: 3000,
