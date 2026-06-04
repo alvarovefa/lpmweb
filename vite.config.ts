@@ -6,6 +6,9 @@ export default defineConfig(({ command }) => {
   return {
     plugins: [tailwindcss()],
     base: command === 'build' ? './' : '/',
+    build: {
+      outDir: 'docs',
+    },
     server: {
       host: '0.0.0.0',
       port: 3000,
