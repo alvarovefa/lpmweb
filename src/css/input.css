@@ -114,10 +114,10 @@
     @apply lg:col-span-5 relative;
 }
 @utility hero-card-tilt {
-    @apply aspect-square bg-slate-800 rounded-3xl overflow-hidden shadow-2xl border border-white/10 rotate-3 hover:rotate-0 transition-transform duration-500 ;
+    @apply md:aspect-square aspect-auto bg-slate-800 rounded-3xl overflow-hidden shadow-2xl border border-white/10 rotate-3 hover:rotate-0 transition-transform duration-500 ;
 }
 @utility hero-card-inner-placeholder {
-    @apply w-full h-full bg-gradient-to-tr bg-blue-900 to-slate-800 flex items-center justify-center p-8;
+    @apply w-full h-full bg-gradient-to-tr bg-blue-900 to-slate-800 flex items-center justify-center overflow-hidden;
 }
 @utility placeholder-text-mono {
     @apply text-slate-500 text-sm font-mono hover:text-slate-400 transition-colors;
@@ -145,7 +145,7 @@
     @apply absolute inset-0 bg-gradient-to-t bg-slate-950/80 to-transparent z-10;
 }
 @utility card-image-placeholder {
-    @apply absolute inset-0 bg-blue-900 flex items-center justify-center text-slate-400 text-xs font-mono;
+    @apply absolute inset-0 bg-blue-900 flex items-center justify-center text-slate-400 text-xs font-mono overflow-hidden;
 }
 @utility card-featured-content {
     @apply absolute bottom-0 left-0 p-8 z-20 space-y-2;
@@ -171,8 +171,23 @@
     @apply h-12 w-12 bg-amber-100 rounded-2xl flex items-center justify-center text-amber-600 font-bold;
 }
 @utility card-inner-photo-placeholder {
-    @apply h-32 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 text-xs font-mono;
+    @apply h-auto md:h-32 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 text-xs font-mono overflow-hidden;
 }
+
+/* Make images inside placeholders responsive and avoid unwanted cropping on small screens */
+.card-inner-photo-placeholder img,
+.card-inner-horizontal-placeholder img,
+.hero-card-inner-placeholder img,
+.card-image-placeholder img,
+.logo-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+/* Redundant mobile block removed to prevent height collapse */
 
 /* Card 3: Horizontal */
 @utility event-card-horizontal {
@@ -185,7 +200,7 @@
     @apply text-xs font-bold text-blue-600 uppercase tracking-wider;
 }
 @utility card-inner-horizontal-placeholder {
-    @apply h-full w-full md:w-48 bg-slate-100 rounded-xl flex-shrink-0 flex items-center justify-center text-slate-400 text-xs font-mono;
+    @apply h-full w-full md:w-48 bg-slate-100 rounded-xl flex-shrink-0 flex items-center justify-center text-slate-400 text-xs font-mono overflow-hidden;
 }
 
 /* Elementos comunes compartidos */
@@ -380,4 +395,66 @@
 /* === UTILIDAD PARA MENÚ RESPONSIVO INTERACTIVO === */
 @utility menu-open {
     @apply !flex;
+}
+
+/* Mobile overlay: center images and place text/icons above them to prioritize visual */
+@media (max-width: 767px) {
+    .event-card-vertical,
+    .event-card-horizontal,
+    .event-card-featured {
+        position: relative;
+        overflow: hidden;
+        min-height: 250px;
+    }
+
+    /* Make the placeholders act as backgrounds */
+    .event-card-vertical .card-inner-photo-placeholder,
+    .event-card-horizontal .card-inner-horizontal-placeholder,
+    .event-card-featured .card-image-placeholder {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        z-index: 0;
+    }
+
+    /* Overlay text/icons */
+    .event-card-vertical .card-vertical-body,
+    .event-card-horizontal .card-horizontal-text-wrapper,
+    .event-card-featured .card-featured-content {
+        position: relative;
+        z-index: 20;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 1.5rem;
+        color: #fff;
+        gap: 0.5rem;
+        height: 100%;
+        background: linear-gradient(to top, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.6) 60%, rgba(15, 23, 42, 0) 100%);
+    }
+
+    .event-card-vertical .card-icon-amber-box {
+        background: rgba(255,255,255,0.95);
+        color: #b45309; /* amber-600 */
+        margin-bottom: 0.5rem;
+    }
+
+    .event-card-vertical .card-vertical-body h3,
+    .event-card-horizontal .card-horizontal-text-wrapper h3,
+    .event-card-vertical .card-vertical-body p,
+    .event-card-horizontal .card-horizontal-text-wrapper p {
+        color: #fff;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    }
+    
+    .event-card-horizontal .badge-tech-blue,
+    .event-card-featured .badge-featured-amber {
+        z-index: 30;
+    }
+    
+    .event-card-horizontal .badge-tech-blue {
+        color: #60a5fa; /* blue-400 for better contrast on dark overlay */
+    }
 }
